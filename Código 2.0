@@ -56,7 +56,7 @@
     <div id="output"></div>
 
     <script>
-        const API_KEY = 'sec_CjS8Voo69kYv8sQWa75JuNaSwUK4fmpM';
+        const API_KEY = 'sec_NPphHz0p2D9bVAPlFzLwOM5bjy9IEcEO';
         const UPLOAD_URL = 'https://api.chatpdf.com/v1/sources/add-file';
         const CHAT_URL = 'https://api.chatpdf.com/v1/chats/message';
         const file_paths = [
@@ -123,12 +123,15 @@
                                                       correctAnswer.startsWith("O documento fornecido não contém informações específicas") ||
                                                       correctAnswer.startsWith("A fonte não contém informações sobre") ||
                                                       correctAnswer.startsWith("A fonte fornecida não contém informações específicas sobre") ||
-                                                      correctAnswer.startsWith("O documento fornecido não contém informações sobre");
+                                                      correctAnswer.startsWith("O documento fornecido não contém informações sobre")||
+                                                      correctAnswer.startsWith("O documento fornecido não contém uma definição específica")||
+                                                      correctAnswer.startsWith("A fonte fornecida não contém uma definição específica")||
+                                                      correctAnswer.startsWith("A fonte consultada não contém uma definição específica");
 
                     // Se começar com as frases específicas, é incorreta; caso contrário, é correta
                     const isCorrect = !startsWithSpecificPhrase;
                     if (isCorrect) {
-                        displayResponse(correctAnswer, data.references, sourceId, file_paths[i]);
+                        displayResponse(correctAnswer, data.references, file_paths[i]);
                     }
                 }
             } else if (sourceIds.length === 0) {
@@ -136,7 +139,7 @@
             }
         }
 
-        function displayResponse(answer, references, sourceId, filePath) {
+        function displayResponse(answer, references, filePath) {
             const outputDiv = document.getElementById('output');
             let referencesText = '';
             if (references && references.length > 0) {
@@ -147,7 +150,6 @@
                 referencesText += '</ul>';
             }
             outputDiv.innerHTML += `
-                <h3>Resposta para Source ID ${sourceId}:</h3>
                 <p>${answer}</p>
                 ${referencesText}
                 <a href="${filePath}" download>Baixar PDF</a>
